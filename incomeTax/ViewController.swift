@@ -27,18 +27,18 @@ class ViewController: UIViewController {
     func calculateIncomeTax(){
         
         var tax: Double = 0
-        var grossIncome: Double = Double(grossIncomeTextfield.text!)!
-        var deduction: Double = Double(deductionTextfield.text!)!
-        var income: Double = Double(grossIncomeTextfield.text!)! - Double(deductionTextfield.text!)!
-        let incomeString = String(format: "%.4f", income)
-        taxedIncome.text = "\(incomeString)"
+        var grossIncome: Double = Double(grossIncomeTextfield.text!)!/10000
+        var deduction: Double = Double(deductionTextfield.text!)!/10000
+        var income: Double = Double(grossIncomeTextfield.text!)!/10000 - Double(deductionTextfield.text!)!/10000
+        let incomeShow = Int(income*10000)
+        taxedIncome.text = "\(incomeShow)"
         let thresholds: [Double]=[54,67,121,211]
         let rates=[0.05,0.12,0.2,0.3,0.4]
         for i in 0..<thresholds.count{
             if income <= thresholds[i]{
                 tax += income * rates[i]
                 income = 0
-                let taxRate = rates[i]*100
+                let taxRate = Int(rates[i]*100)
                 taxRateTextfield.text = "\(taxRate)"
                 break
             }else{
@@ -48,8 +48,8 @@ class ViewController: UIViewController {
             }
         }
         tax += income * rates[(rates.count)-1]
-        let taxString = String(format:"%.4f" ,tax)
-        taxResultTextfield.text = " \(taxString)"
+        let taxInt = Int(tax*10000)
+        taxResultTextfield.text = " \(taxInt)"
         
     }
     
@@ -57,7 +57,7 @@ class ViewController: UIViewController {
             super.viewDidLoad()
             // Do any additional setup after loading the view.
         deductSegmentControl.selectedSegmentIndex = 0
-        deductionTextfield.text = "32"
+        deductionTextfield.text = "320000"
         grossIncomeTextfield.text = ""
         taxedIncome.text = ""
         taxRateTextfield.text = ""
@@ -65,7 +65,9 @@ class ViewController: UIViewController {
         }
     
     @IBAction func calculateTax(_ sender: Any) {
-        if grossIncomeTextfield != nil, deductionTextfield != nil, Double(grossIncomeTextfield.text!)! - Double(deductionTextfield.text!)! >= 0{
+        var grossIncome = Double(grossIncomeTextfield.text!)
+        var deduction = Double(deductionTextfield.text!)
+        if grossIncome != nil, deduction != nil,  Double(grossIncomeTextfield.text!)! - Double(deductionTextfield.text!)! >= 0{
             textFieldShouldReturn(grossIncomeTextfield)
             textFieldShouldReturn(deductionTextfield)
             calculateIncomeTax()
@@ -80,7 +82,7 @@ class ViewController: UIViewController {
         let index = deductSegmentControl.selectedSegmentIndex
         switch index {
         case 0: // 標準扣除
-            deductionTextfield.text = "32"
+            deductionTextfield.text = "320000"
         case 1:// 列舉扣除
             deductionTextfield.text = ""
             deductionTextfield.isEnabled = true
