@@ -72,6 +72,8 @@ class ViewController: UIViewController {
             textFieldShouldReturn(deductionTextfield)
             calculateIncomeTax()
         }else {
+            textFieldShouldReturn(grossIncomeTextfield)
+            textFieldShouldReturn(deductionTextfield)
             taxedIncome.text = "0"
             taxRateTextfield.text = ""
             taxResultTextfield.text = "無需繳稅"
@@ -92,6 +94,8 @@ class ViewController: UIViewController {
         }
     }
     @IBAction func clearEntry(_ sender: UIButton) {
+        textFieldShouldReturn(grossIncomeTextfield)
+        textFieldShouldReturn(deductionTextfield)
         viewDidLoad()
     }
 }
